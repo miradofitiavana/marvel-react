@@ -15,7 +15,7 @@ const Routes = () => {
     <Router>
       <Switch>
         <Route exact path='/' component={Login} />
-        <Route path='/home/:id' component={Home} />
+        <Route path='/home' component={Home} />
         <Redirect to='/'></Redirect>
       </Switch>
     </Router>
