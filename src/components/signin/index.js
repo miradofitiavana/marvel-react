@@ -1,50 +1,28 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
-import axios from 'axios'
 
 import { useHistory } from 'react-router-dom'
 
-const Signin = () => {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+const Signin = ({ submit }) => {
+  const [formState, setFormState] = useState({ username: '', password: '' })
+  const [errorMessage, setErrorMessage] = useState('')
 
   const history = useHistory()
 
-  const submit = e => {
-    e.preventDefault()
-    console.log(username)
-    console.log(password)
-
-    axios({
-      method: 'POST',
-      url: 'https://easy-login-api.herokuapp.com/users/login',
-      data: {
-        username,
-        password
-      }
-    })
-      .then(res => {
-        localStorage.setItem('token', res.headers['x-access-token'])
-        history.push('/home/20')
-      })
-      .catch(err => {
-        console.log(err)
-      })
-  }
-
   return (
-    <StyledForm onSubmit={submit}>
+    <StyledForm onSubmit={e => submit(e, formState, setErrorMessage, history)}>
       <StyledSpan>Signin</StyledSpan>
       <SigninInput
-        onChange={e => setUsername(e.target.value)}
+        onChange={e => setFormState({ ...formState, username: e.target.value })}
         placeholder='Username'
         type='text'
       ></SigninInput>
       <SigninInput
-        onChange={e => setPassword(e.target.value)}
+        onChange={e => setFormState({ ...formState, password: e.target.value })}
         placeholder='Password'
         type='password'
       ></SigninInput>
+      <StyledSpan>{errorMessage}</StyledSpan>
       <SigninInput type='submit'></SigninInput>
     </StyledForm>
   )
