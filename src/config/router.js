@@ -9,17 +9,21 @@ import {
 
 import Login from '../screens/login'
 import Home from '../screens/home'
+import Characters from '../screens/characters'
 
 import PrivateRoute from '../utils/privateRoute'
-import HeaderLogout from '../components/headerLogout'
+import Header from '../components/header'
+import Favorite from '../screens/favorite'
 
 const Routes = () => {
   return (
     <Router>
-      <HeaderLogout></HeaderLogout>
+      {localStorage.getItem('token') ? <Header></Header> : null}
       <Switch>
         <Route exact path='/' component={Login} />
         <PrivateRoute path='/home' component={Home} />
+        <PrivateRoute path='/favorite' component={Favorite} />
+        <PrivateRoute path='/characters/:id' component={Characters} />
         <Redirect to='/'></Redirect>
       </Switch>
     </Router>

@@ -8,6 +8,9 @@ import Pagination from '../components/pagination/index'
 import md5 from 'md5'
 
 import privateKey from '../.secret'
+import Character from '../components/character'
+import styled from 'styled-components'
+import { useHistory } from 'react-router-dom'
 
 const Home = props => {
   const valueOffset = 20
@@ -15,6 +18,9 @@ const Home = props => {
   const [total, setTotal] = useState(0)
 
   const [charactersList, setCharactersList] = useState([])
+
+  const history = useHistory()
+
   useEffect(() => {
     const publicKey = 'bb4708a620c8ba9a2c30a9494a8cb4e4'
     const timeStamp = new Date().getMilliseconds()
@@ -43,11 +49,14 @@ const Home = props => {
 
   return (
     <div>
-      <Header></Header>
-      <p>home</p>
-      {charactersList.map(character => (
-        <p>{character.name}</p>
-      ))}
+      <div>
+        <Link to='/favorite'>Favoris</Link>
+      </div>
+      <CharacterListContainer>
+        {charactersList.map((character, index) => (
+          <Character key={index} character={character}></Character>
+        ))}
+      </CharacterListContainer>
       <Pagination
         total={total}
         setCurrentPage={setCurrentPage}
@@ -56,5 +65,13 @@ const Home = props => {
     </div>
   )
 }
+
+const CharacterListContainer = styled.div`
+  padding: 15px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-gap: 10px;
+  grid-auto-rows: minmax(100px, auto);
+`
 
 export default Home
